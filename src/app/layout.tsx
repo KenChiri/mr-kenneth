@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { useState } from "react";
 
 
 
@@ -9,8 +10,7 @@ import "./globals.css";
 //My New components 
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-import { useState } from "react";
-
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,16 +41,17 @@ export default function RootLayout({
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   return (
     <html lang="en">
+      <AnimatedBackground />
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${robotMono.variable} antialiased`}
       >
-        <Navbar />
+        <Navbar/>
         <Sidebar 
           isExpanded={sidebarExpanded}
           setIsExpanded={setSidebarExpanded}
         />
         <main className={`pt-16 transition-all duration-900 ease-in-out ${
-          sidebarExpanded ? 'ml-80' : 'ml-20' 
+          sidebarExpanded ? 'md:ml-80' : 'md:ml-20' 
           }`}>
         {children}
       </main>

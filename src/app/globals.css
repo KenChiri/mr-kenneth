@@ -4,3 +4,61 @@
 body {
   background-color: #030712;
 }
+
+.bubble {
+  position: absolute;
+  border-radius: 100%;
+  animation: float 25s infinite linear;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.x1 {
+  width: 200px;
+  height: 200px;
+  left: 10%;
+  animation-duration: 20s;
+  animation-delay: 0s;
+}
+
+.x2 {
+  width: 250px;
+  height: 250px;
+  left: 35%;
+  animation-duration: 22s;
+  animation-delay: 2s;
+}
+
+.x3 {
+  width: 150px;
+  height: 150px;
+  left: 65%;
+  animation-duration: 28s;
+  animation-delay: 4s;
+}
+
+.x4 {
+  width: 300px;
+  height: 300px;
+  left: 80%;
+  animation-duration: 18s;
+  animation-delay: 1s;
+}
+
+.x5 {
+  width: 180px;
+  height: 180px;
+  left: 0%;
+  animation-duration: 25s;
+  animation-delay: 5s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(720deg);
+    opacity: 0;
+  }
+}

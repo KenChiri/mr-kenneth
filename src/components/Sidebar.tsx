@@ -31,8 +31,8 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
          className={`
            fixed top-0 left-0 h-screen bg-gray-950 text-gray-300 z-40 
            border-r border-gray-800 mt-20 
-           transition-all duration-300 ease-in-out 
-           ${isExpanded ? 'w-64' : 'w-20'}  
+           transition-all duration-300 ease-in-out hidden md:block
+           ${isExpanded ? 'w-80' : 'w-20'}  
          `}
        >
         {/* === NEW HEADER SECTION === */}
