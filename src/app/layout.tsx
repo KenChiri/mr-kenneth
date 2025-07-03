@@ -4,9 +4,6 @@ import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { useState } from "react";
 
-
-
-
 //My New components 
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
@@ -38,14 +35,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
+  
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    console.log("Mobile menu button clicked!"); 
+  };
+
   return (
     <html lang="en">
       <AnimatedBackground />
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${robotMono.variable} antialiased`}
       >
-        <Navbar/>
+        <Navbar onMenuClick={handleMenuClick} />
         <Sidebar 
           isExpanded={sidebarExpanded}
           setIsExpanded={setSidebarExpanded}
@@ -54,7 +59,7 @@ export default function RootLayout({
           sidebarExpanded ? 'md:ml-80' : 'md:ml-20' 
           }`}>
         {children}
-      </main>
+        </main>
       </body>
     </html>
   );
