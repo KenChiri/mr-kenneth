@@ -35,8 +35,8 @@ const ProfileDropdown = () => {
         </div>
         {isProfileExpanded && (
           <div className="pl-8 py-2 text-sm space-y-2">
-            <p><strong>Email:</strong> your.email@example.com</p>
-            <p><strong>LinkedIn:</strong> <a href="#" className="text-blue-400 hover:underline">/in/yourprofile</a></p>
+            <p><strong>Email:</strong> <a href='mailto:kennethkipchiri@gmail.com'> Kennethkipchiri@gmail.com </a></p>
+            <p><strong>LinkedIn:</strong> <a href="linkedin.com/in/kenneth-kipchirchir-67953427b/" className="text-blue-400 hover:underline">Kenchiri -LinkenIn</a></p>
           </div>
         )}
 

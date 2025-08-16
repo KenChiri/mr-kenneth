@@ -23,7 +23,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
         { id: 'projects', icon: CodeBracketIcon, label: 'Projects' },
         { id: 'experiences', icon: UserIcon, label: 'Experience' },
         { id: 'education', icon: AcademicCapIcon, label: 'Education' },
-        { id: 'certification', icon: EnvelopeIcon, label: 'Certifications' },
+        { id: 'certifications', icon: EnvelopeIcon, label: 'Certifications' },
     ];
 
     return (
