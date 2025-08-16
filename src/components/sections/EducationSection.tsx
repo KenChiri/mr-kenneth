@@ -1,10 +1,19 @@
-const EducationSection = () => {
+import { education } from '@/data/education';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import { EducationCard } from '@/components/ui/EducationCard';
+
+export const EducationSection = () => {
   return (
-    <div>
-      {/* Your experience section content here */}
-      <h2>Experience</h2>
-      <p>This section is under construction.</p>
-    </div>
+    <section id="education">
+      <SectionHeader
+        title="Education"
+        description="My academic background and qualifications"
+      />
+      <div className="max-w-4xl mx-auto space-y-6">
+        {education.map(edu => (
+          <EducationCard key={edu.id} education={edu} />
+        ))}
+      </div>
+    </section>
   );
 };
-export { EducationSection };

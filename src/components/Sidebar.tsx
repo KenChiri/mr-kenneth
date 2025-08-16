@@ -21,9 +21,9 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
     const menuItems = [
         { id: 'home', icon: HomeIcon, label: 'Home' },
         { id: 'projects', icon: CodeBracketIcon, label: 'Projects' },
-        { id: 'Experiences', icon: UserIcon, label: 'Experience' },
-        { id: 'Education', icon: AcademicCapIcon, label: 'Education' },
-        { id: 'Certification', icon: EnvelopeIcon, label: 'Certifications' },
+        { id: 'experiences', icon: UserIcon, label: 'Experience' },
+        { id: 'education', icon: AcademicCapIcon, label: 'Education' },
+        { id: 'certification', icon: EnvelopeIcon, label: 'Certifications' },
     ];
 
     return (
