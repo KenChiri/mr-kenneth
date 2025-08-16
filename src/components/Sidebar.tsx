@@ -9,15 +9,15 @@ import {
     ChevronRightIcon, 
     AcademicCapIcon
 } from '@heroicons/react/24/solid';
-
-
+import { useNavigation } from "./NavigationContext";
+import { menuItems } from "@/data/navigation";
 interface SidebarProps {
     isExpanded: boolean;
     setIsExpanded: (expanded: boolean) => void;
 }
 
 const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
-
+    const { activeSection, setActiveSection } = useNavigation();
     const menuItems = [
         { id: 'home', icon: HomeIcon, label: 'Home' },
         { id: 'projects', icon: CodeBracketIcon, label: 'Projects' },
@@ -30,9 +30,9 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
        <aside 
          className={`
            fixed top-0 left-0 h-screen bg-gray-950 text-gray-300 z-40 
-           border-r border-gray-800 mt-20 
+            mt-16 
            transition-all duration-300 ease-in-out hidden md:block
-           ${isExpanded ? 'w-80' : 'w-20'}  
+           ${isExpanded ? 'w-64' : 'w-20'}  
          `}
        >
         {/* === NEW HEADER SECTION === */}
@@ -61,11 +61,20 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
             <ul className="flex flex-col space-y-1">
                 {menuItems.map((item) => {
                     const IconComponent = item.icon;
+
+                    const isActive = activeSection === item.id;
                     return (
                         <li key={item.id} className="px-2">
-                            <Link
-                                href={`#${item.id}`}
-                                className="flex items-center p-3 rounded-lg hover:bg-gray-800 hover:text-yellow-400 transition-colors group"
+                            <button
+                                onClick={() => setActiveSection(item.id)}
+                                className={`
+                                  flex items-center p-3 rounded-lg w-full text-left
+                                  transition-colors group
+                                  ${isActive 
+                                    ? 'bg-yellow-400/10 text-yellow-400' 
+                                    : 'hover:bg-gray-800 hover:text-white'
+                                  }`
+                                }
                             >
                                 <IconComponent className="w-6 h-6 flex-shrink-0 text-gray-400 group-hover:text-yellow-400" />
                                 <span 
@@ -77,7 +86,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
                                 >
                                     {item.label}
                                 </span>
-                            </Link>
+                            </button>
                         </li>
                     );
                 })}

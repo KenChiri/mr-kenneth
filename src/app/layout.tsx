@@ -1,13 +1,12 @@
-'use client';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import { useState } from "react";
 
-//My New components 
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
+
+
 import AnimatedBackground from "@/components/AnimatedBackground";
+import { NavigationProvider } from "@/components/NavigationContext";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,30 +35,23 @@ export default function RootLayout({
 }>) {
 
   
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleMenuClick = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    console.log("Mobile menu button clicked!"); 
-  };
+  
 
   return (
     <html lang="en">
-      <AnimatedBackground />
+      
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${robotMono.variable} antialiased`}
       >
-        <Navbar onMenuClick={handleMenuClick} />
-        <Sidebar 
-          isExpanded={sidebarExpanded}
-          setIsExpanded={setSidebarExpanded}
-        />
-        <main className={`pt-16 transition-all duration-900 ease-in-out ${
-          sidebarExpanded ? 'md:ml-80' : 'md:ml-20' 
-          }`}>
-        {children}
-        </main>
+        <AnimatedBackground />
+        <NavigationProvider>
+        
+          <ClientLayout> {children} </ClientLayout>
+
+        </NavigationProvider>
+        
+      
       </body>
     </html>
   );

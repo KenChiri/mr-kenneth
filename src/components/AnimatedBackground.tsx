@@ -3,7 +3,7 @@
 
 const AnimatedBackground = () => {
     return (
-    <div className="fixed inset-0 -z-10 h-full w-full bg-zinc-950">
+    <div className="fixed inset-0 -z-10 h-full w-full bg-zinc-950 rounded-lg">
         {/*This is a div that will be teh containe for the shapes*/}
 
         <div className="relative h-full w-full bg[radial-gradient(#e5e7eb_1px,transparent_10px)] [background-size:16px_16px]">
