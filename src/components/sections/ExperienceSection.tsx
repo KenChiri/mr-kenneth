@@ -5,7 +5,7 @@ import { ExperienceCard } from '@/components/ui/ExperienceCard';
 
 export const ExperienceSection = () => {
   return (
-    <section id="experiences">
+    <section id="experiences" className='py-20 bg-black text-white'>
       <SectionHeader
         title="Work Experience"
         description="My professional journey and key accomplishments"

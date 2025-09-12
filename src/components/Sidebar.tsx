@@ -29,7 +29,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
     return (
        <aside 
          className={`
-           fixed top-0 left-0 h-screen bg-gray-950 text-gray-300 z-40 
+           fixed top-0 left-0 h-screen bg-gray-950/50 text-gray-300 z-40 
             mt-16 
            transition-all duration-300 ease-in-out hidden md:block
            ${isExpanded ? 'w-64' : 'w-20'}  

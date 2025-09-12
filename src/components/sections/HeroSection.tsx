@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownIcon } from '@heroicons/react/24/outline';
+import ChevronLeftIcon from '@heroicons/react/24/solid/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/24/solid/ChevronRightIcon';
 
-// --- PASTE YOUR EXPANDED storySlides ARRAY HERE ---
+
 const storySlides = [
-  // ... (the full array from Step 1)
+
   {
     id: 1,
     tagline: "Full-Stack Developer & Business Strategist",
@@ -15,10 +17,9 @@ const storySlides = [
     backgroundImage: "/images/hero/code.jpg",
     cta1: { text: "View My Work", href: "#projects" },
     cta2: { text: "Download CV", href: "/kenneth-cv.pdf" },
-    // --- NEW DETAILED CONTENT ---
     detailedContent: {
       title: "From Business Logic to Scalable Code",
-      image: "/images/blog/business-process.jpg", // Find a new image for this
+      image: "/images/blog/business-process.jpg", 
       paragraphs: [
         "My journey into development wasn't just about learning to code; it was about learning to solve problems. I specialize in analyzing complex business workflows and re-engineering them into efficient, scalable digital systems. I believe the best software is built on a foundation of clear logic and a relentless focus on the end-user's needs.",
         "Whether it's a complex e-commerce platform or a streamlined internal tool, I thrive under pressure to deliver robust and maintainable code. If you have a challenge that requires more than just a website, but a true digital partner, let's talk."
@@ -33,17 +34,17 @@ const storySlides = [
     backgroundImage: "/images/hero/ocean.jpg",
     cta1: { text: "Learn About My Mission", href: "#" },
     cta2: { text: "Support a Cause", href: "#" },
-     // --- NEW DETAILED CONTENT ---
+
     detailedContent: {
       title: "Technology for a Greener Tomorrow",
-      image: "/images/blog/turtle.jpg", // Find a powerful image of a turtle or forest
+      image: "/images/blog/turtle.jpg", 
       paragraphs: [
         "Traveling has opened my eyes to the fragile beauty of our world and the urgent threats it faces. Seeing a sea turtle navigate a plastic-choked ocean isn't an abstract problem—it's a call to action. I am actively seeking opportunities to apply my skills in software development to conservation.",
         "Imagine real-time dashboards for anti-poaching units, mobile apps for citizen-led clean-up drives, or data platforms that model the impact of deforestation. These are the projects that drive me. My love for the ocean and wildlife is not just a hobby; it's the 'why' behind my work."
       ]
     }
   },
-  // ... Add detailedContent to your other slides as well ...
+
   {
     id: 4,
     tagline: "Dreamer & Explorer",
@@ -52,10 +53,10 @@ const storySlides = [
     backgroundImage: "/images/hero/sky.jpg",
     cta1: { text: "Get In Touch", href: "#" },
     cta2: { text: "Follow My Journey", href: "#" },
-     // --- NEW DETAILED CONTENT ---
+
     detailedContent: {
       title: "The Art of Creation",
-      image: "/images/blog/kenyan-art.jpg", // Find an image of Kenyan art or a starry night
+      image: "/images/blog/kenyan-art.jpg",
       paragraphs: [
         "Creativity is the common thread in everything I love. The masterful storytelling in an anime series, the vibrant and resilient spirit of Kenyan culture, the humbling vastness of a star-filled sky—they all remind me that we are here to create and connect.",
         "This philosophy infuses my development work. I strive to build interfaces that are not just functional but also beautiful and intuitive. I believe technology should feel less like a machine and more like a natural extension of our own creativity."
@@ -64,7 +65,6 @@ const storySlides = [
   },
 ];
 
-// This is the new component for the "blog" section
 type StorySlide = typeof storySlides[number];
 
 const StoryContent = ({ slide }: { slide: StorySlide }) => {
@@ -112,12 +112,14 @@ const StoryContent = ({ slide }: { slide: StorySlide }) => {
 const HeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % storySlides.length);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, []);
+  
+  const nextSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % storySlides.length);
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex - 1 + storySlides.length) % storySlides.length);
+  };
 
   const activeSlide = storySlides[activeIndex];
 
@@ -125,6 +127,23 @@ const HeroSection = () => {
     <section id="home">
       {/* Part 1: The Visual Hero Rotator */}
       <div className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+        {/* Left Arrow button*/}
+        <button 
+          onClick={prevSlide} 
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-black/30 backdrop-blur-sm rounded-full hover:bg-black/50 transition-colors"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeftIcon className="w-6 h-6 text-white"/>
+        </button>
+
+        <button 
+          onClick={nextSlide} 
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-black/30 backdrop-blur-sm rounded-full hover:bg-black/50 transition-colors"
+          aria-label="Next Slide"
+        >
+          <ChevronRightIcon className="w-6 h-6 text-white"/>
+        </button>
+        
         <AnimatePresence>
           <motion.div
             key={activeIndex}

@@ -10,7 +10,7 @@ const AnimatedBackground = () => {
             <div className="bubble x1 bg-yellow-400/20"></div>
             <div className="bubble x2 bg-blue-500/20"></div>
             <div className="bubble x3 bg-green-500/20"></div>
-            <div className="bubble x4 bg-purple-500/20"></div>
+            <div className="bubble x4 bg-orange-800-500/20"></div>
             <div className="bubble x5 bg-red-500/20"></div>
         </div>
     </div>

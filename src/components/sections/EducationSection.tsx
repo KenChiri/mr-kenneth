@@ -1,6 +1,6 @@
 import { education } from '@/data/education';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { EducationCard } from '@/components/ui/EducationCard';
+import EducationTimeline from '@/components/ui/EducationTimeline';
 
 export const EducationSection = () => {
   return (
@@ -9,11 +9,7 @@ export const EducationSection = () => {
         title="Education"
         description="My academic background and qualifications"
       />
-      <div className="max-w-4xl mx-auto space-y-6">
-        {education.map(edu => (
-          <EducationCard key={edu.id} education={edu} />
-        ))}
-      </div>
+      <EducationTimeline  />
     </section>
   );
 };
