@@ -6,7 +6,6 @@ import { EducationSection } from '@/components/sections/EducationSection';
 import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import HeroSection from '@/components/sections/HeroSection'
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
-
 const PlaceholderSection = ({ title }: { title: string }) => (
   <div className="min-h-screen flex items-center justify-center p-8">
     <div className="text-center">

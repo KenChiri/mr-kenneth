@@ -1,6 +1,6 @@
 import { education } from '@/data/education';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import EducationTimeline from '@/components/ui/EducationTimeline';
+import EducationTimeline from '@/components/ui/KENXEEducationTimeline';
 
 export const EducationSection = () => {
   return (

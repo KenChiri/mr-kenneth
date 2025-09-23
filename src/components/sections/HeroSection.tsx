@@ -1,213 +1,523 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDownIcon } from '@heroicons/react/24/outline';
-import ChevronLeftIcon from '@heroicons/react/24/solid/ChevronLeftIcon';
-import ChevronRightIcon from '@heroicons/react/24/solid/ChevronRightIcon';
+import { ContentCard } from '../ui/ContentCard';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+// Define types
+interface Tab {
+  id: string;
+  label: string;
+}
 
-
-const storySlides = [
-
-  {
-    id: 1,
-    tagline: "Full-Stack Developer & Business Strategist",
-    title: "I Build Digital Solutions That Drive Growth.",
-    description: "I merge elegant code with a deep understanding of business process re-engineering to create web applications that are foundational to success.",
-    backgroundImage: "/images/hero/code.jpg",
-    cta1: { text: "View My Work", href: "#projects" },
-    cta2: { text: "Download CV", href: "/kenneth-cv.pdf" },
-    detailedContent: {
-      title: "From Business Logic to Scalable Code",
-      image: "/images/blog/business-process.jpg", 
-      paragraphs: [
-        "My journey into development wasn't just about learning to code; it was about learning to solve problems. I specialize in analyzing complex business workflows and re-engineering them into efficient, scalable digital systems. I believe the best software is built on a foundation of clear logic and a relentless focus on the end-user's needs.",
-        "Whether it's a complex e-commerce platform or a streamlined internal tool, I thrive under pressure to deliver robust and maintainable code. If you have a challenge that requires more than just a website, but a true digital partner, let's talk."
-      ]
-    }
-  },
-  {
-    id: 2,
-    tagline: "Guardian of the Wild",
-    title: "My Code Has a Purpose: To Protect Our Planet.",
-    description: "My goal is to leverage technology to support conservation efforts, from wildlife tracking systems to platforms that fight pollution.",
-    backgroundImage: "/images/hero/ocean.jpg",
-    cta1: { text: "Learn About My Mission", href: "#" },
-    cta2: { text: "Support a Cause", href: "#" },
-
-    detailedContent: {
-      title: "Technology for a Greener Tomorrow",
-      image: "/images/blog/turtle.jpg", 
-      paragraphs: [
-        "Traveling has opened my eyes to the fragile beauty of our world and the urgent threats it faces. Seeing a sea turtle navigate a plastic-choked ocean isn't an abstract problem—it's a call to action. I am actively seeking opportunities to apply my skills in software development to conservation.",
-        "Imagine real-time dashboards for anti-poaching units, mobile apps for citizen-led clean-up drives, or data platforms that model the impact of deforestation. These are the projects that drive me. My love for the ocean and wildlife is not just a hobby; it's the 'why' behind my work."
-      ]
-    }
-  },
-
-  {
-    id: 4,
-    tagline: "Dreamer & Explorer",
-    title: "Inspired by Stories, Stars, and Culture.",
-    description: "Beyond the code, I find inspiration in anime, Kenyan culture, and the beauty of the night sky. These passions fuel my creativity.",
-    backgroundImage: "/images/hero/sky.jpg",
-    cta1: { text: "Get In Touch", href: "#" },
-    cta2: { text: "Follow My Journey", href: "#" },
-
-    detailedContent: {
-      title: "The Art of Creation",
-      image: "/images/blog/kenyan-art.jpg",
-      paragraphs: [
-        "Creativity is the common thread in everything I love. The masterful storytelling in an anime series, the vibrant and resilient spirit of Kenyan culture, the humbling vastness of a star-filled sky—they all remind me that we are here to create and connect.",
-        "This philosophy infuses my development work. I strive to build interfaces that are not just functional but also beautiful and intuitive. I believe technology should feel less like a machine and more like a natural extension of our own creativity."
-      ]
-    }
-  },
+// --- Static Data for Tabs ---
+const TABS: Tab[] = [
+  { id: 'about', label: 'About' },
+  { id: 'bio', label: 'Bio' },
+  { id: 'contact', label: 'Contact Me' },
 ];
 
-type StorySlide = typeof storySlides[number];
+// --- Animated Circuit Line Component ---
+const CircuitLine = ({ isActive, index }: { isActive: boolean; index: number }) => (
+  <div className="relative overflow-hidden">
+    <span
+      className={`block h-px transition-all duration-500 ease-out relative ${isActive ? 'w-20 bg-gradient-to-r from-[#FBC308] via-yellow-400 to-[#FBC308]' : 'w-10 bg-gray-600'
+        }`}
+      style={{
+        animationDelay: `${index * 0.2}s`
+      }}
+    >
+      {isActive && (
+        <>
+          {/* Glowing effect */}
+          <span className="absolute inset-0 bg-[#FBC308] blur-sm animate-pulse" />
+          {/* Moving particle effect */}
+          <span className="absolute top-0 left-0 w-1 h-px bg-white animate-ping"
+            style={{ animationDuration: '2s', animationDelay: `${index * 0.3}s` }} />
+        </>
+      )}
+    </span>
+  </div>
+);
 
-const StoryContent = ({ slide }: { slide: StorySlide }) => {
-  if (!slide.detailedContent) return null;
+// --- Profile Image Component ---
+const ProfileImage = () => (
+  <div className="relative mb-6 group">
+    <div className="w-48 h-48 rounded-2xl  p-0.5 ">
+      <div className="w-full h-full bg-gray-900 rounded-2xl flex items-center justify-center overflow-hidden">
+        {/* Placeholder for actual image */}
+        {/* <div className="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-[#FBC308] font-bold text-lg">
+          KK
+        </div> */}
+        <Image
+          src="/images/pfp.jpg"
+          alt="Profile Image"
+          width={150}
+          height={150}
+          className='w-full h-full object-cover'
+        />
+      </div>
+    </div>
+    {/* Floating particles around profile */}
+    <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#FBC308] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+    <div className="absolute top-1/2 -left-1 w-1 h-1 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '1s' }} />
+    <div className="absolute -bottom-1 right-1/3 w-1.5 h-1.5 bg-[#FBC308] rounded-full animate-bounce" style={{ animationDelay: '2s' }} />
+  </div>
+);
+
+// --- Clean Social Links Component ---
+const SocialLinks = () => (
+  <div className="flex items-center space-x-6 mt-8">
+    {[
+      {
+        href: "https://github.com/KenChiri",
+        icon: "M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z",
+        label: "GitHub"
+      },
+      {
+        href: "mailto:kennethkipchiri@gmail.com",
+        icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+        label: "Email",
+        stroke: true
+      },
+      {
+        href: "tel:+254705346371",
+        icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
+        label: "Phone",
+        stroke: true
+      },
+      {
+        href: "https://www.linkedin.com/in/kenneth-kipchirchir-67953427b/",
+        icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z",
+        label: "LinkedIn",
+        stroke: true
+      }
+    ].map((social, index) => (
+      <a
+        key={social.label}
+        href={social.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={social.label}
+        className="group relative p-2 hover:scale-125 transition-all duration-300"
+      >
+        <svg className="w-6 h-6 text-gray-500 group-hover:text-[#FBC308] transition-colors duration-300"
+          fill={social.stroke ? "none" : "currentColor"}
+          stroke={social.stroke ? "currentColor" : "none"}
+          viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path
+            fillRule={social.stroke ? undefined : "evenodd"}
+            strokeLinecap={social.stroke ? "round" : undefined}
+            strokeLinejoin={social.stroke ? "round" : undefined}
+            strokeWidth={social.stroke ? "2" : undefined}
+            d={social.icon}
+            clipRule={social.stroke ? undefined : "evenodd"}
+          />
+        </svg>
+        {/* Simple glow effect */}
+        <div className="absolute inset-0 bg-[#FBC308]/30 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+      </a>
+    ))}
+
+  </div>
+);
+
+//--REsume section--
+const ResumeButton = () => (
+  <a
+    href="/RESUME-KENNETH-KIPCHIRCHIR.pdf" // The path to your CV in the public folder
+    target="_blank" // Opens the CV in a new tab
+    rel="noopener noreferrer"
+    // download // Uncomment this line if you want the file to download directly instead of opening
+    className="group relative mt-8 inline-block px-6 py-3 bg-transparent text-[#FBC308] font-bold border-2 border-[#FBC308] rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#FBC308]/30"
+  >
+    <span className="relative z-10">View My Resume</span>
+    {/* Animated hover effect */}
+    <div className="absolute inset-0 bg-[#FBC308] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+    <span className="absolute inset-0 z-10 text-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left flex items-center justify-center font-bold">
+      View My Resume
+    </span>
+  </a>
+);
+
+
+// --- Clean Content Components ---
+const AboutContent = () => (
+  <div className="space-y-8 max-w-2xl">
+    <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+      <p className="text-xl font-medium text-white/90">
+        With over <span className="text-[#FBC308] font-bold">five years</span> of hands-on experience in the tech industry, I bring a comprehensive understanding of the full software development lifecycle.
+      </p>
+      <p>
+        My expertise allows me to transform a concept into a fully deployed product, using widely adopted programming languages and frameworks.
+      </p>
+      <p>
+        My goal is to re-engineer business processes, creating systems that solve complex problems and automate redundant tasks through thoughtful, scalable software solutions.
+      </p>
+      <div className="mt-8 p-6 bg-gradient-to-r from-[#FBC308]/10 to-transparent border-l-4 border-[#FBC308] rounded-r-xl">
+        <p className="text-white font-semibold text-lg">
+          Currently: <span className="text-[#FBC308]">Backend Web Developer</span>
+        </p>
+        <p className="text-gray-400 mt-1">Building APIs for E-Commerce platforms at Bestworlds IT Solutions</p>
+      </div>
+    </div>
+    <ResumeButton />
+  </div>
+);
+
+
+const BioContent = () => {
+
+  const [isVideoOpen, setVideoOpen] = useState(false);
+
+  const videoUrl = "https://www.youtube.com/embed/2HXAxx7Nrrs?si=NOcLYydJkRPp4gUG?autoplay=1";
+
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={slide.id}
-        className="max-w-4xl mx-auto py-16 md:py-24 px-8"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.7, ease: 'easeInOut' }}
-      >
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="prose prose-invert prose-lg text-gray-300">
-            <h2 className="text-3xl font-bold text-white mb-4">{slide.detailedContent.title}</h2>
-            {slide.detailedContent.paragraphs.map((p, index) => (
-              <p key={index}>{p}</p>
-            ))}
+    <>
+      <ContentCard>
+        <h3 className="text-3xl font-bold text-[#FBC308] mb-6">Elevator Pitch</h3>
+
+        {/* This is now a BUTTON that opens the modal */}
+        <button
+          onClick={() => setVideoOpen(true)}
+          className="group block relative aspect-video w-full bg-gray-900/50 border border-gray-700 rounded-xl overflow-hidden cursor-pointer text-left"
+        >
+          {/* 1. Video Thumbnail Image */}
+          <Image
+            src="/images/thumbnail.jpg" // Path to your video thumbnail
+            alt="Video Elevator Pitch Thumbnail"
+            layout="fill"
+            objectFit="cover"
+            className="opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-20 h-20 bg-[#FBC308]/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg shadow-[#FBC308]/30 group-hover:bg-[#FBC308] group-hover:scale-110 transition-all duration-300">
+              <svg className="w-8 h-8 text-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+            </div>
           </div>
-          <motion.div 
-            className="rounded-xl overflow-hidden shadow-2xl"
-            initial={{ scale: 0.95, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+              <p className="text-white font-medium text-sm">My Technology Journey & Vision</p>
+              <p className="text-gray-300 text-xs mt-1">Click to play video [0:45]</p>
+            </div>
+          </div>
+        </button>
+
+        <p className="text-gray-300 text-lg mt-6">
+          Here, I share my passion for technology, my approach to problem-solving, and what drives me to create meaningful software.
+        </p>
+      </ContentCard>
+
+      {/* --- VIDEO PLAYER MODAL --- */}
+      <AnimatePresence>
+        {isVideoOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setVideoOpen(false)} // Close modal when clicking the background
+            className="fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 p-4"
           >
-            <Image
-              src={slide.detailedContent.image}
-              alt={slide.detailedContent.title}
-              width={500}
-              height={500}
-              className="object-cover w-full h-full"
-            />
+            {/* The phone-like container for the portrait video */}
+            <motion.div
+              initial={{ scale: 0.8, y: 50 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: -50 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-sm bg-black rounded-3xl border-4 border-gray-700 shadow-2xl"
+            >
+              <div className="relative w-full aspect-[9/16] overflow-hidden rounded-[20px]">
+                <iframe
+                  src={videoUrl}
+                  title="Elevator Pitch Video"
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+            </motion.div>
+            <button onClick={() => setVideoOpen(false)} className="absolute top-4 right-4 text-white text-3xl font-bold">&times;</button>
           </motion.div>
-        </div>
-      </motion.div>
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
+const ContactContent = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [focusedField, setFocusedField] = useState('');
 
-const HeroSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  
-  const nextSlide = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % storySlides.length);
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
-
-  const prevSlide = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + storySlides.length) % storySlides.length);
-  };
-
-  const activeSlide = storySlides[activeIndex];
 
   return (
-    <section id="home">
-      {/* Part 1: The Visual Hero Rotator */}
-      <div className="relative h-screen flex items-center justify-center text-white overflow-hidden">
-        {/* Left Arrow button*/}
-        <button 
-          onClick={prevSlide} 
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-black/30 backdrop-blur-sm rounded-full hover:bg-black/50 transition-colors"
-          aria-label="Previous Slide"
-        >
-          <ChevronLeftIcon className="w-6 h-6 text-white"/>
-        </button>
+    <div className="space-y-8 max-w-2xl">
+      <h3 className="text-3xl font-bold text-[#FBC308] mb-8 flex items-center">
 
-        <button 
-          onClick={nextSlide} 
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-black/30 backdrop-blur-sm rounded-full hover:bg-black/50 transition-colors"
-          aria-label="Next Slide"
-        >
-          <ChevronRightIcon className="w-6 h-6 text-white"/>
-        </button>
-        
-        <AnimatePresence>
-          <motion.div
-            key={activeIndex}
-            className="absolute inset-0 z-0"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.1 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
-          >
-            <Image
-              src={activeSlide.backgroundImage}
-              alt={activeSlide.title}
-              layout="fill"
-              objectFit="cover"
-              className="brightness-[0.4]"
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-10" />
+        Get In Touch
+      </h3>
+      <p className="text-gray-300 text-lg mb-8">
+        I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision.
+      </p>
 
-        <div className="relative z-20 flex flex-col items-center text-center max-w-4xl mx-auto p-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className="flex flex-col items-center"
-            >
-              <p className="font-bold text-yellow-400 uppercase tracking-wider mb-2">{activeSlide.tagline}</p>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">{activeSlide.title}</h1>
-              <p className="text-lg md:text-xl text-gray-300 max-w-2xl">{activeSlide.description}</p>
-            </motion.div>
-          </AnimatePresence>
-          
-          <div className="flex flex-col sm:flex-row gap-4 mt-10">
-              <a href={activeSlide.cta1.href} className="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-black font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  {activeSlide.cta1.text}
-              </a>
-              <a href={activeSlide.cta2.href} className="px-8 py-4 border-2 border-gray-600 font-semibold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300">
-                  {activeSlide.cta2.text}
-              </a>
+      <div className="space-y-6">
+        {/* Name Field */}
+        <div className="relative group">
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            onFocus={() => setFocusedField('name')}
+            onBlur={() => setFocusedField('')}
+            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] peer"
+            placeholder="Your Name"
+          />
+          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.name || focusedField === 'name'
+            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
+            : 'top-4 text-gray-400'
+            }`}>
+            Your Name
+          </label>
+          {/* Animated underline */}
+          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'name' ? 'w-full' : 'w-0'
+            }`} />
+        </div>
+
+        {/* Email Field */}
+        <div className="relative group">
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            onFocus={() => setFocusedField('email')}
+            onBlur={() => setFocusedField('')}
+            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] peer"
+            placeholder="Your Email"
+          />
+          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.email || focusedField === 'email'
+            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
+            : 'top-4 text-gray-400'
+            }`}>
+            Your Email
+          </label>
+          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'email' ? 'w-full' : 'w-0'
+            }`} />
+        </div>
+
+        {/* Message Field */}
+        <div className="relative group">
+          <textarea
+            value={formData.message}
+            onChange={(e) => handleInputChange('message', e.target.value)}
+            onFocus={() => setFocusedField('message')}
+            onBlur={() => setFocusedField('')}
+            rows={5}
+            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] resize-none peer"
+            placeholder="Your Message"
+          />
+          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.message || focusedField === 'message'
+            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
+            : 'top-4 text-gray-400'
+            }`}>
+            Your Message
+          </label>
+          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'message' ? 'w-full' : 'w-0'
+            }`} />
+        </div>
+
+        {/* Fun Send Button */}
+        <button
+          type="button"
+          className="group relative px-8 py-4 bg-gradient-to-r from-[#FBC308] to-yellow-400 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#FBC308]/30 overflow-hidden"
+        >
+          <span className="relative z-10 flex items-center justify-center">
+            Send Message
+            <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          </span>
+          {/* Animated particles */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+            <div className="absolute top-3 right-6 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+            <div className="absolute bottom-2 left-1/3 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
           </div>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const HeroSection = () => {
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const scrollAccumulator = useRef<number>(0);
+
+  // Scroll threshold to change tabs
+  const SCROLL_THRESHOLD = 200;
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      // Accumulate scroll delta
+      scrollAccumulator.current += e.deltaY;
+
+      // Calculate which tab should be active based on scroll
+      let targetTab = Math.floor(scrollAccumulator.current / SCROLL_THRESHOLD);
+
+      // Clamp between 0 and max tabs
+      targetTab = Math.max(0, Math.min(targetTab, TABS.length - 1));
+
+      // If scrolling up past the first tab, allow negative values temporarily
+      if (scrollAccumulator.current < 0) {
+        scrollAccumulator.current = 0;
+        targetTab = 0;
+      }
+
+      // If scrolling down past the last tab, don't go beyond
+      if (targetTab >= TABS.length) {
+        targetTab = TABS.length - 1;
+        scrollAccumulator.current = targetTab * SCROLL_THRESHOLD;
+      }
+
+      setActiveTab(targetTab);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        const nextTab = Math.min(activeTab + 1, TABS.length - 1);
+        setActiveTab(nextTab);
+        scrollAccumulator.current = nextTab * SCROLL_THRESHOLD;
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        const prevTab = Math.max(activeTab - 1, 0);
+        setActiveTab(prevTab);
+        scrollAccumulator.current = prevTab * SCROLL_THRESHOLD;
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeTab]);
+
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+    scrollAccumulator.current = index * SCROLL_THRESHOLD;
+  };
+
+  const renderActiveContent = () => {
+    switch (activeTab) {
+      case 0:
+        return <AboutContent />;
+      case 1:
+        return <BioContent />;
+      case 2:
+        return <ContactContent />;
+      default:
+        return <AboutContent />;
+    }
+  };
+
+  return (
+    <section className="h-screen text-white overflow-hidden relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FBC308]/10 via-transparent to-[#FBC308]/10" />
+      </div>
+
+      <div className="grid lg:grid-cols-2 lg:gap-10 h-full relative z-10">
+        {/* Left Panel - Navigation */}
+        <div className="px-8 py-16 lg:py-24 flex flex-col">
+          <div className="flex-1">
+            {/* Profile Section */}
+            <ProfileImage />
+
+            <h1 className="text-5xl lg:text-5xl  font-bold bg-clip-text ">
+              Kenneth Kipchirchir
+            </h1>
+            <div className="absolute mt-2 w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full " />
+            <h2 className="mt-4 text-2xl font-semibold text-white/90">IT Software Engineer</h2>
+            <p className="mt-4 text-lg text-gray-400 max-w-xs leading-relaxed">
+              I transform concepts into deployed products, building scalable software solutions that automate and improve business processes.
+            </p>
+
+            {/* Enhanced Navigation with Socials immediately after */}
+            <nav className="mt-16">
+              <ul className="space-y-6">
+                {TABS.map((tab, index) => (
+                  <li key={tab.id}>
+                    <button
+                      onClick={() => handleTabClick(index)}
+                      className="flex items-center space-x-4 group w-full text-left focus:outline-none transition-all duration-300 hover:translate-x-2"
+                    >
+                      <CircuitLine isActive={activeTab === index} index={index} />
+                      <span className={`font-bold uppercase tracking-widest text-sm transition-all duration-300 ${activeTab === index
+                        ? 'text-[#FBC308] drop-shadow-[0_0_10px_#FBC308] scale-105'
+                        : 'text-gray-500 hover:text-gray-300'
+                        }`}>
+                        {tab.label}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Social Links right after tabs */}
+              <SocialLinks />
+
+            </nav>
+
+
+          </div>
+
+          {/* Social Links positioned closer to tabs */}
+          {/* <div className="mt-12">
+            <SocialLinks />
+          </div> */}
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
-          {storySlides.map((_, index) => (
-            <button key={index} onClick={() => setActiveIndex(index)} className={`w-3 h-3 rounded-full transition-colors duration-300 ${activeIndex === index ? 'bg-yellow-400' : 'bg-gray-600 hover:bg-gray-400'}`} />
-          ))}
-        </div>
-        
-        {/* The new "Scroll Down" indicator */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-            <ArrowDownIcon className="w-6 h-6 text-white/50"/>
+        {/* Right Panel - Content */}
+        <div className="px-8 lg:py-24 flex items-center overflow-hidden">
+          <div className="w-full pr-8 transform transition-all duration-700 ease-out">
+            {renderActiveContent()}
+          </div>
+
         </div>
       </div>
 
-      {/* Part 2: The Detailed Story Content */}
-      <div className="relative bg-gray-950">
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black to-transparent z-10" />
-        <StoryContent slide={activeSlide} />
+      {/* Enhanced Scroll Indicator */}
+      <div className="fixed bottom-8 right-8 flex flex-col items-center space-y-3 bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/10">
+        <div className="text-xs text-[#FBC308] uppercase tracking-wider font-semibold">Scroll</div>
+        <div className="flex flex-col space-y-2">
+          {TABS.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${activeTab === index
+                ? 'bg-[#FBC308] shadow-lg shadow-[#FBC308]/50 scale-125'
+                : 'bg-gray-600 hover:bg-gray-500'
+                }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

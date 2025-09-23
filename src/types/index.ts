@@ -42,6 +42,7 @@ export interface Certification {
   issueDate: string;
   credentialId?: string;
   verificationUrl?: string;
+  imageUrl?: string;
 }
 
 

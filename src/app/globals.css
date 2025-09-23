@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind utilities;
 @tailwind components;
+
 body {
   background-color: #030712;
   overflow: hidden;
@@ -59,33 +60,45 @@ body {
     transform: translateY(100vh) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(-100vh) rotate(720deg);
     opacity: 0;
   }
 }
 
+
+
 ::-webkit-scrollbar {
-  width: 8px; /* Width of the entire scrollbar */
-  height: 8px; /* Height of the horizontal scrollbar */
+  width: 8px;
+  /* Width of the entire scrollbar */
+  height: 8px;
+  /* Height of the horizontal scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-  background: #111827; /* Color of the tracking area (gray-900) */
+  background: #111827;
+  /* Color of the tracking area (gray-900) */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #4b5563; /* Color of the scroll thumb (gray-600) */
-  border-radius: 10px; /* How rounded the scroll thumb is */
-  border: 2px solid #111827; /* Creates padding around the thumb */
+  background-color: #4b5563;
+  /* Color of the scroll thumb (gray-600) */
+  border-radius: 10px;
+  /* How rounded the scroll thumb is */
+  border: 2px solid #111827;
+  /* Creates padding around the thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #6b7280; /* Color of the thumb on hover (gray-500) */
+  background-color: #6b7280;
+  /* Color of the thumb on hover (gray-500) */
 }
 
 /* For Firefox */
 html {
-  scrollbar-width: thin; /* Can be "auto", "thin", or "none" */
-  scrollbar-color: #4b5563 #111827; /* thumb-color track-color */
+  scrollbar-width: thin;
+  /* Can be "auto", "thin", or "none" */
+  scrollbar-color: #4b5563 #111827;
+  /* thumb-color track-color */
 }

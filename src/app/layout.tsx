@@ -4,7 +4,7 @@ import "./globals.css";
 
 
 
-import AnimatedBackground from "@/components/AnimatedBackground";
+import AnimatedMotherboardBackground from "@/components/AnimatedBackground"
 import { NavigationProvider } from "@/components/NavigationContext";
 import ClientLayout from "@/components/ClientLayout";
 
@@ -34,24 +34,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  
 
-  
+
+
 
   return (
     <html lang="en">
-      
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${robotMono.variable} antialiased`}
       >
-        <AnimatedBackground />
+        <AnimatedMotherboardBackground />
         <NavigationProvider>
-        
+
           <ClientLayout> {children} </ClientLayout>
 
         </NavigationProvider>
-        
-      
+
+
       </body>
     </html>
   );
