@@ -7,7 +7,7 @@ export const ExperienceSection = () => {
   return (
     <section id="experiences" className='py-20  text-white'>
       <SectionHeader
-        title="Work Experience"
+        title="Work Experience" 
         description="My professional journey and key accomplishments"
       />
       <div className="max-w-4xl mx-auto space-y-6">

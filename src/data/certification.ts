@@ -17,7 +17,7 @@ export const certification: Certification[] = [
     issueDate: 'September 2025',
     credentialId: 'none',
     verificationUrl: '',
-    imageUrl: '/images/certs/alx-certificate.jpg'
+    imageUrl: '/images/certs/alxpf.png'
   },
   {
     id: '3',

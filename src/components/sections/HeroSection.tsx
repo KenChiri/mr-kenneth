@@ -13,8 +13,7 @@ interface Tab {
 // --- Static Data for Tabs ---
 const TABS: Tab[] = [
   { id: 'about', label: 'About' },
-  { id: 'bio', label: 'Bio' },
-  { id: 'contact', label: 'Contact Me' },
+  { id: 'bio', label: 'Bio' }
 ];
 
 // --- Animated Circuit Line Component ---
@@ -126,7 +125,7 @@ const SocialLinks = () => (
 //--REsume section--
 const ResumeButton = () => (
   <a
-    href="/RESUME-KENNETH-KIPCHIRCHIR.pdf" // The path to your CV in the public folder
+    href="/Kenneth_Kipchirchir_Resume.pdf" // The path to your CV in the public folder
     target="_blank" // Opens the CV in a new tab
     rel="noopener noreferrer"
     // download // Uncomment this line if you want the file to download directly instead of opening
@@ -251,115 +250,6 @@ const BioContent = () => {
   );
 };
 
-const ContactContent = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [focusedField, setFocusedField] = useState('');
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  return (
-    <div className="space-y-8 max-w-2xl">
-      <h3 className="text-3xl font-bold text-[#FBC308] mb-8 flex items-center">
-
-        Get In Touch
-      </h3>
-      <p className="text-gray-300 text-lg mb-8">
-        I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious vision.
-      </p>
-
-      <div className="space-y-6">
-        {/* Name Field */}
-        <div className="relative group">
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            onFocus={() => setFocusedField('name')}
-            onBlur={() => setFocusedField('')}
-            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] peer"
-            placeholder="Your Name"
-          />
-          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.name || focusedField === 'name'
-            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
-            : 'top-4 text-gray-400'
-            }`}>
-            Your Name
-          </label>
-          {/* Animated underline */}
-          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'name' ? 'w-full' : 'w-0'
-            }`} />
-        </div>
-
-        {/* Email Field */}
-        <div className="relative group">
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            onFocus={() => setFocusedField('email')}
-            onBlur={() => setFocusedField('')}
-            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] peer"
-            placeholder="Your Email"
-          />
-          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.email || focusedField === 'email'
-            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
-            : 'top-4 text-gray-400'
-            }`}>
-            Your Email
-          </label>
-          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'email' ? 'w-full' : 'w-0'
-            }`} />
-        </div>
-
-        {/* Message Field */}
-        <div className="relative group">
-          <textarea
-            value={formData.message}
-            onChange={(e) => handleInputChange('message', e.target.value)}
-            onFocus={() => setFocusedField('message')}
-            onBlur={() => setFocusedField('')}
-            rows={5}
-            className="w-full bg-transparent border-2 border-gray-600 rounded-xl p-4 text-white placeholder-transparent transition-all duration-300 focus:outline-none focus:border-[#FBC308] resize-none peer"
-            placeholder="Your Message"
-          />
-          <label className={`absolute left-4 transition-all duration-300 pointer-events-none ${formData.message || focusedField === 'message'
-            ? '-top-2 text-sm text-[#FBC308] bg-gray-950 px-2'
-            : 'top-4 text-gray-400'
-            }`}>
-            Your Message
-          </label>
-          <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FBC308] to-yellow-400 transition-all duration-300 ${focusedField === 'message' ? 'w-full' : 'w-0'
-            }`} />
-        </div>
-
-        {/* Fun Send Button */}
-        <button
-          type="button"
-          className="group relative px-8 py-4 bg-gradient-to-r from-[#FBC308] to-yellow-400 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#FBC308]/30 overflow-hidden"
-        >
-          <span className="relative z-10 flex items-center justify-center">
-            Send Message
-            <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-          </span>
-          {/* Animated particles */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-            <div className="absolute top-3 right-6 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-            <div className="absolute bottom-2 left-1/3 w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-          </div>
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const HeroSection = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -430,8 +320,6 @@ const HeroSection = () => {
         return <AboutContent />;
       case 1:
         return <BioContent />;
-      case 2:
-        return <ContactContent />;
       default:
         return <AboutContent />;
     }

@@ -2,6 +2,13 @@ export interface Project {
   id: string;
   title: string;
   description: string;
+  longDescription?: string;
+  date?: string;
+  contributors?:{
+    name: string;
+    avatar?: string;
+    role?: string;
+  };
   image: string;
   tags: string[];
   bookmarked?: boolean;

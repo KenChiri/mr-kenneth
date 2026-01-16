@@ -37,7 +37,7 @@ export const education: Education[] = [
     duration: 'May 2014 - 2016 Dec',
     grade: '71.6',
     description: 'Kenneth learns about all the intresting fields, like science maths, and he is now ready to go deeper',
-  }
+  },
   
 ];
 

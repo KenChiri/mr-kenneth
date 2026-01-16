@@ -33,10 +33,15 @@ const timelineData: TimelineItem[] = [
         title: "Graduation Day",
         description: "I completed my diploma studies and graduated from the TVET institution with a solid foundation in IT.",
     },
-     {
+    {
         year: "2022 - May",
         title: "Joined Kabarak University.",
         description: "I joined  Kabarak University to Pursue a Bachelor's degree in Information Technology, specializing in software Engineering..",
+    },
+    {
+        year: "2025 - December",
+        title: "Graduated from Kabarak University.",
+        description: "I successfully completed my Bachelor's degree in Information Technology, graduating with First Class Honors.",
     },
 ];
 
