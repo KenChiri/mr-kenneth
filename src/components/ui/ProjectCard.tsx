@@ -33,10 +33,10 @@ export const ProjectCard = ({ project, onBookmark, onShare }: ProjectCardProps) 
 
   return (
 
-    <Card className="overflow-hidden group flex flex-col h-full bg-gray-950/50 backdrop-blur border-zinc-800">
+    <Card className="overflow-hidden group flex flex-col h-full bg-gray-950/50 backdrop-blur border-zinc-800 p-5">
 
       {/* Header */}
-      <div className="flex items-center justify-between p-4 pb-3">
+      {/* <div className="flex items-center justify-between p-4 pb-3">
         <div className="flex items-center space-x-3">
           <img
             src={project.author.avatar}
@@ -56,7 +56,7 @@ export const ProjectCard = ({ project, onBookmark, onShare }: ProjectCardProps) 
             <ShareIcon className="w-4 h-4 text-gray-400 hover:text-white" />
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Content */}
       {/* CHANGE 2: Added 'flex-grow' to push the footer down */}

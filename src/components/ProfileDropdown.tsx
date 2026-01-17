@@ -65,13 +65,13 @@ const ProfileDropdown = ({ onOpenContact, onOpenBio }: ProfileDropdownProps) => 
           <Link href="https://github.com/KenChiri" target="_blank" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-zinc-700 hover:text-white transition-colors">
             <FaGithub className="w-5 h-5" />
           </Link>
-          <Link href="https://linkedin.com" target="_blank" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-blue-600 hover:text-white transition-colors">
+          <Link href="https://www.linkedin.com/in/kenneth-kipchirchir-67953427b/" target="_blank" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-blue-600 hover:text-white transition-colors">
             <FaLinkedin className="w-5 h-5" />
           </Link>
           <Link href="#" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-pink-600 hover:text-white transition-colors">
             <FaInstagram className="w-5 h-5" />
           </Link>
-          <Link href="#" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-sky-500 hover:text-white transition-colors">
+          <Link href="https://x.com/KenChirii" className="flex items-center justify-center h-10 rounded-lg bg-zinc-800 hover:bg-sky-500 hover:text-white transition-colors">
             <FaTwitter className="w-5 h-5" />
           </Link>
         </div>

@@ -26,7 +26,7 @@ export const CertificationCard = ({ certification, onCardClick }: CertificationC
         )}
       </div>
       <p className="text-yellow-400 font-medium mb-4">{certification.issuer}</p>
-      {/* ... rest of the card content ... */}
+
     </Card>
   );
 };

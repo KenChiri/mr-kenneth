@@ -1,7 +1,7 @@
 'use client';
 import { Project } from '@/types';
-import { XMarkIcon, CalendarIcon, UserGroupIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
+import { XMarkIcon, CalendarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'; // Importing the intuitive React Icons
 import { Tag } from './Tag';
 
 interface ProjectModalProps {
@@ -15,6 +15,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
         e.stopPropagation();
     };
 
+    // Helper to check if a URL is valid (exists and is not just an empty string)
+    const hasLiveUrl = project.liveUrl && project.liveUrl.trim() !== "";
+    const hasGithubUrl = project.githubUrl && project.githubUrl.trim() !== "";
+
     return (
         <div
             className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
@@ -24,7 +28,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 className="relative w-full max-w-5xl bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
                 onClick={handleContentClick}
             >
-                {/* Close Button (Mobile/Desktop) */}
+                {/* Close Button */}
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-zinc-800 rounded-full text-white transition-colors"
@@ -32,9 +36,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     <XMarkIcon className="w-6 h-6" />
                 </button>
 
-                {/* LEFT: Image Section (Landscape Figure Ground) */}
+                {/* LEFT: Image Section */}
                 <div className="w-full md:w-1/2 relative bg-zinc-950 h-64 md:h-auto">
-                    {/* If using Next/Image, ensure width/height or layout fill are correct */}
                     <div className="relative w-full h-full">
                         <img
                             src={project.image}
@@ -59,9 +62,9 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                     <h2 className="text-3xl font-bold text-white mb-4 leading-tight">{project.title}</h2>
 
-                    {/* Action Buttons */}
+                    {/* Action Buttons (Conditionally Rendered) */}
                     <div className="flex flex-wrap gap-3 mb-8">
-                        {project.liveUrl && (
+                        {hasLiveUrl && (
                             <a
                                 href={project.liveUrl}
                                 target="_blank"
@@ -69,16 +72,18 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                 className="flex items-center space-x-2 bg-white text-black px-6 py-2.5 rounded-xl font-bold hover:bg-gray-200 transition-colors"
                             >
                                 <span>Visit Site</span>
-                                <ArrowTopRightOnSquareIcon className="w-5 h-5" />
+                                <FaExternalLinkAlt className="w-4 h-4" />
                             </a>
                         )}
-                        {project.githubUrl && (
+
+                        {hasGithubUrl && (
                             <a
                                 href={project.githubUrl}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="flex items-center space-x-2 bg-zinc-800 text-white px-6 py-2.5 rounded-xl font-medium hover:bg-zinc-700 transition-colors"
                             >
+                                <FaGithub className="w-5 h-5" />
                                 <span>Source Code</span>
                             </a>
                         )}
@@ -108,7 +113,6 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                     <UserGroupIcon className="w-4 h-4 mr-1" /> Contributors
                                 </h3>
                                 <div className="flex -space-x-2 overflow-hidden">
-                                    {/* If contributors exist, map them. Otherwise show placeholder/self */}
                                     {Array.isArray(project.contributors) ? (
                                         project.contributors.map((c, i) => (
                                             <div key={i} title={c.name} className="w-8 h-8 rounded-full bg-zinc-700 border-2 border-zinc-900 flex items-center justify-center text-xs">
